@@ -6,10 +6,13 @@ Class XlsxWork
 {
     private $phpExcel;
 
-    public function createNewXlsx()
+
+    function __construct()
     {
         $this->phpExcel = new PHPExcel();
-        file_put_contents("logs.log", "\nSUCCESS: creating object.", FILE_APPEND);
+        $currentDT = new DateTime();
+        $currentDT = $currentDT->format('d-m-Y H:i:s');
+        file_put_contents("logs.log", "\n" . $currentDT . ' SUCCESS: creating object.', FILE_APPEND);
     }
 
     public function addData($data)
@@ -80,7 +83,9 @@ Class XlsxWork
             }
         }
 
-        file_put_contents("logs.log", "\nSUCCESS: adding data.", FILE_APPEND);
+        $currentDT = new DateTime();
+        $currentDT = $currentDT->format('d-m-Y H:i:s');
+        file_put_contents("logs.log", "\n" . $currentDT . ' SUCCESS: adding data.', FILE_APPEND);
     }
 
     public function saveXlsx()
@@ -88,17 +93,24 @@ Class XlsxWork
         try {
             $this->phpExcel = PHPExcel_IOFactory::createWriter($this->phpExcel, 'Excel2007');
         } catch (PHPExcel_Reader_Exception $e) {
-            file_put_contents("logs.log", "\nERROR: " . $e, FILE_APPEND);
+
+            $currentDT = new DateTime();
+            $currentDT = $currentDT->format(' d-m-Y H:i:s');
+            file_put_contents("logs.log", "\n" . $currentDT.'ERROR: ' . $e, FILE_APPEND);
             return;
         }
         $dt = new DateTime();
         try {
             $this->phpExcel->save('file_' . $dt->format('d_m_Y_H_i_s') . '.xlsx');
         } catch (PHPExcel_Writer_Exception $e) {
-            file_put_contents("logs.log", "\nERROR: " . $e, FILE_APPEND);
+            $currentDT = new DateTime();
+            $currentDT = $currentDT->format('d-m-Y H:i:s');
+            file_put_contents("logs.log", "\n" . $currentDT.' ERROR: ' . $e, FILE_APPEND);
             return;
         }
-        file_put_contents("logs.log", "\nSUCCESS: saving file.", FILE_APPEND);
+        $currentDT = new DateTime();
+        $currentDT = $currentDT->format('d-m-Y H:i:s');
+        file_put_contents("logs.log", "\n" . $currentDT . ' SUCCESS: saving file.', FILE_APPEND);
 
     }
 
