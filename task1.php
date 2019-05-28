@@ -18,30 +18,22 @@ $example = [
     ]
 ];
 
-function deleteEmptyFields($input)
-{
-    if (!is_array($input)) {
-        return $input;
-    }
-    $notEmptyItems = array();
-
-    foreach ($input as $key => $value) {
-        if ($value || is_numeric($value)) {
-            $temp = deleteEmptyFields($value);
-            if ($temp || is_numeric($temp)) {
-                $notEmptyItems[$key] = $temp;
-            }
+function recursive_array_filter($array) {
+    foreach ($array as &$value) {
+        if (is_array($value)) {
+            $value = recursive_array_filter($value);
         }
     }
-
-    return $notEmptyItems;
+    return array_filter($array, function ($var) {
+        return ($var !== false && $var !== null && $var !== '' && $var !== []);
+    });
 }
 
 echo '<pre>';
 print_r($example);
 echo '</pre>';
 echo '<hr/>';
-$example = deleteEmptyFields($example);
+$example = recursive_array_filter($example);
 echo 'Обработанный массив';
 echo '<pre>';
 print_r($example);
