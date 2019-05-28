@@ -24,6 +24,7 @@ function recursive_array_filter($array) {
             $value = recursive_array_filter($value);
         }
     }
+    //Если 0 считается за пустое значение, то можно просто убрать callback-функцию
     return array_filter($array, function ($var) {
         return ($var !== false && $var !== null && $var !== '' && $var !== []);
     });
